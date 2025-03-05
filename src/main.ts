@@ -1,9 +1,34 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { Logger, ValidationPipe } from '@nestjs/common';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  const config = new DocumentBuilder()
+    .setTitle('nex-projects API')
+    .setDescription('nex-projects API documentation')
+    .setVersion('0.0.101')
+    .addTag('projects')
+    .addBearerAuth(
+      {
+        description: 'Default JWT Authorization',
+        type: 'http',
+        in: 'header',
+        scheme: 'bearer',
+        bearerFormat: 'JWT',
+      },
+      'defaultBearerAuth',
+    )
+    .setContact(
+      'sreesayanth',
+      'https://dataguardnxt.com/',
+      'sree@dataguardnxt.com',
+    )
+    .build();
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('api', app, document);
 
   // Enable ValidationPipe for request validation
   app.useGlobalPipes(new ValidationPipe());
