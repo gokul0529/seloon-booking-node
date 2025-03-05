@@ -9,7 +9,7 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
 
   await app.listen(process.env.PORT ?? 3000);
-  Logger.log(`🚀 Server started on http://localhost:${process.env.PORT} `, 'Bootstrap');
+  Logger.log(`🚀 Server started on port ${process.env.PORT || 3000} `, 'Bootstrap');
 }
 bootstrap();
 
