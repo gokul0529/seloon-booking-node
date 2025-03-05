@@ -11,4 +11,4 @@ git pull origin dev
 # npm run build
 
 # restart pm2
-pm2 restart projects-api
+pm2 restart nxt-projects-api
