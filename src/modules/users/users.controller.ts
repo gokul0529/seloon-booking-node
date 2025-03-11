@@ -4,7 +4,7 @@ import { CreateDepartmentDto, CreateDesignationDto, CreateRoleDto, CreateUserDto
 import { UpdateUserDto } from './dto/update-user.dto';
 import { AccessTokenGuard } from '../auth/guards/access-token.guard';
 import { CreateOfficeLocationDto } from './dto/create-office-location.dto';
-import { ApiBearerAuth } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiConsumes, ApiOperation } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { query } from 'express';
 
@@ -71,6 +71,27 @@ export class UsersController {
 
   @UseGuards(AccessTokenGuard)
   @Post('create-user')
+  @ApiConsumes('multipart/form-data')
+  @ApiOperation({ summary: 'Create a new user with avatar' })
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        name: { type: 'string' },
+        email: { type: 'string' },
+        employeeId: { type: 'string' },
+        officeLocationId: { type: 'string' },
+        departmentId: { type: 'string' },
+        designationId: { type: 'string' },
+        roleId: { type: 'string' },
+        avatar: {
+          type: 'string',
+          format: 'binary',
+          description: 'User avatar image'
+        }
+      }
+    }
+  })
   @UseInterceptors(FileInterceptor('avatar'))
   async createUser(
     @Request() req,
