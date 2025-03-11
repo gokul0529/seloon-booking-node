@@ -1,11 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Req, Request, UseInterceptors, UploadedFile } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Req, Request, UseInterceptors, UploadedFile, Query } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { CreateDepartmentDto, CreateDesignationDto, CreateRoleDto, CreateUserDto } from './dto/create-user.dto';
+import { CreateDepartmentDto, CreateDesignationDto, CreateRoleDto, CreateUserDto, PaginationDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { AccessTokenGuard } from '../auth/guards/access-token.guard';
 import { CreateOfficeLocationDto } from './dto/create-office-location.dto';
 import { ApiBearerAuth } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { query } from 'express';
 
 @ApiBearerAuth('defaultBearerAuth')
 @Controller('users')
@@ -77,5 +78,11 @@ export class UsersController {
     @UploadedFile() avatar: Express.Multer.File
   ) {
     return this.usersService.createUser(req.user.sub, req.user.orgId, createUserDto, avatar);
+  }
+
+  @UseGuards(AccessTokenGuard)
+  @Get('get-users')
+  async getUsers(@Request() req, @Query() query: PaginationDto) {
+    return this.usersService.getUsers(req.user.orgId, query);
   }
 }

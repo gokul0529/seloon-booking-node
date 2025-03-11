@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { CreateDepartmentDto, CreateDesignationDto, CreateRoleDto, CreateUserDto } from './dto/create-user.dto';
+import { CreateDepartmentDto, CreateDesignationDto, CreateRoleDto, CreateUserDto, PaginationDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { CreateOfficeLocationDto } from './dto/create-office-location.dto';
 import { InjectModel } from '@nestjs/mongoose';
@@ -149,6 +149,19 @@ export class UsersService {
     return {
       message: 'User created successfully',
       data: user
+    }
+  }
+
+  async getUsers(orgId: string, query: PaginationDto) {
+    const page = query.page || 1;
+    const limit = query.limit || 10;
+    const skip = (page - 1) * limit;
+    const users = await this.userModel.find({ orgId: new Types.ObjectId(orgId) }).skip(skip).limit(limit).lean();
+    const total = await this.userModel.countDocuments({ orgId: new Types.ObjectId(orgId) });
+    return {
+      message: 'Users fetched successfully',
+      data: users,
+      total,
     }
   }
 }

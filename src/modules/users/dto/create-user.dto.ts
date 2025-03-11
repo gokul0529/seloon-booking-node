@@ -24,3 +24,8 @@ export class CreateRoleDto {
     name: string;
     permissions: PermissionCollection[];
 }
+
+export class PaginationDto {
+    page: number;
+    limit: number;
+}
