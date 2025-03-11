@@ -8,9 +8,12 @@ import { Role, RoleSchema } from 'src/schemas/role.schema';
 import { OfficeLocation, OfficeLocationSchema } from 'src/schemas/office-location.schema';
 import { Department, DepartmentSchema } from 'src/schemas/department.schema';
 import { Designation, DesignationSchema } from 'src/schemas/designation.schema';
+import { S3Service } from '../common/services/s3.service';
+import { ConfigModule } from '@nestjs/config'; // Import this
 
 @Module({
   imports: [
+    ConfigModule, // Add this line
     MongooseModule.forFeature([
       { name: User.name, schema: UserSchema },
       { name: Organization.name, schema: OrganizationSchema },
@@ -21,6 +24,7 @@ import { Designation, DesignationSchema } from 'src/schemas/designation.schema';
     ]),
   ],
   controllers: [UsersController],
-  providers: [UsersService],
+  providers: [UsersService, S3Service],
+  exports: [UsersService]
 })
 export class UsersModule { }

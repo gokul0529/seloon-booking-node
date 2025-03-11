@@ -1,10 +1,11 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Req, Request } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Req, Request, UseInterceptors, UploadedFile } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateDepartmentDto, CreateDesignationDto, CreateRoleDto, CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { AccessTokenGuard } from '../auth/guards/access-token.guard';
 import { CreateOfficeLocationDto } from './dto/create-office-location.dto';
 import { ApiBearerAuth } from '@nestjs/swagger';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @ApiBearerAuth('defaultBearerAuth')
 @Controller('users')
@@ -65,5 +66,16 @@ export class UsersController {
   @Post('get-roles')
   async getRoles(@Request() req) {
     return this.usersService.getRoles(req.user.orgId);
+  }
+
+  @UseGuards(AccessTokenGuard)
+  @Post('create-user')
+  @UseInterceptors(FileInterceptor('avatar'))
+  async createUser(
+    @Request() req,
+    @Body() createUserDto: CreateUserDto,
+    @UploadedFile() avatar: Express.Multer.File
+  ) {
+    return this.usersService.createUser(req.user.sub, req.user.orgId, createUserDto, avatar);
   }
 }

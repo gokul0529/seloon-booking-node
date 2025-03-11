@@ -56,8 +56,20 @@ export class User {
     @Prop({ type: String, enum: UserType, default: UserType.USER })
     userType: UserType;
 
-    @Prop({ type: Types.ObjectId, ref: 'Role' })
+    @Prop({ type: Types.ObjectId, ref: 'Role', required: true })
     roleId?: Types.ObjectId;
+
+    @Prop({ type: Types.ObjectId, ref: 'OfficeLocation' })
+    officeLocationId?: Types.ObjectId;
+
+    @Prop({ type: Types.ObjectId, ref: 'Department' })
+    departmentId?: Types.ObjectId;
+
+    @Prop({ type: Types.ObjectId, ref: 'Designation' })
+    designationId?: Types.ObjectId;
+
+    @Prop({ type: String })
+    employeeId?: string;
 
     @Prop({ select: false })
     otp?: string;

@@ -10,6 +10,7 @@ import { Department } from 'src/schemas/department.schema';
 import { Designation } from 'src/schemas/designation.schema';
 import { Role } from 'src/schemas/role.schema';
 import * as fs from 'fs';
+import { S3Service } from '../common/services/s3.service';
 
 @Injectable()
 export class UsersService {
@@ -20,7 +21,8 @@ export class UsersService {
     @InjectModel(OfficeLocation.name) private officeLocationModel: Model<OfficeLocation>,
     @InjectModel(Department.name) private departmentModel: Model<Department>,
     @InjectModel(Designation.name) private designationModel: Model<Designation>,
-    @InjectModel(Role.name) private roleModel: Model<Role>
+    @InjectModel(Role.name) private roleModel: Model<Role>,
+    private readonly s3Service: S3Service
   ) {
     try {
       const fileContent = fs.readFileSync(this.permissionsFile, 'utf8');
@@ -120,6 +122,33 @@ export class UsersService {
     return {
       message: 'Roles fetched successfully',
       data: roles
+    }
+  }
+
+  async createUser(userId: string, orgId: string, createUserDto: CreateUserDto, avatar: Express.Multer.File) {
+
+    // Upload avatar to S3 if provided
+    let avatarUrl: any = null
+    if (avatar) {
+      const timestamp = Date.now();
+      const originalFileName = avatar.originalname;
+      const FileName = `${timestamp}_${originalFileName}`;
+      const folder = `avatars/${orgId}`;
+      avatarUrl = await this.s3Service.uploadFile(avatar, folder, FileName);
+    }
+    const user = await this.userModel.create({
+      ...createUserDto,
+      departmentId: createUserDto.departmentId ? new Types.ObjectId(createUserDto.departmentId) : null,
+      designationId: createUserDto.designationId ? new Types.ObjectId(createUserDto.designationId) : null,
+      roleId: new Types.ObjectId(createUserDto.roleId),
+      createdBy: new Types.ObjectId(userId),
+      orgId: new Types.ObjectId(orgId),
+      avatarUrl: avatarUrl
+    });
+
+    return {
+      message: 'User created successfully',
+      data: user
     }
   }
 }
