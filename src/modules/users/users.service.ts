@@ -114,4 +114,12 @@ export class UsersService {
       data: role
     }
   }
+
+  async getRoles(orgId: string) {
+    const roles = await this.roleModel.find({ orgId: new Types.ObjectId(orgId), isActive: true }).lean();
+    return {
+      message: 'Roles fetched successfully',
+      data: roles
+    }
+  }
 }

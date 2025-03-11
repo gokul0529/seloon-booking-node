@@ -60,4 +60,10 @@ export class UsersController {
   async createRole(@Request() req, @Body() createRoleDto: CreateRoleDto) {
     return this.usersService.createRole(req.user.sub, req.user.orgId, createRoleDto);
   }
+
+  @UseGuards(AccessTokenGuard)
+  @Post('get-roles')
+  async getRoles(@Request() req) {
+    return this.usersService.getRoles(req.user.orgId);
+  }
 }
