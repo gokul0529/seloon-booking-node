@@ -1,3 +1,5 @@
+import { PermissionCollection } from "src/schemas/role.schema";
+
 export class CreateUserDto { }
 
 
@@ -11,5 +13,5 @@ export class CreateDesignationDto {
 
 export class CreateRoleDto {
     name: string;
-    permissions: any[];
+    permissions: PermissionCollection[];
 }
