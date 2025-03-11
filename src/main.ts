@@ -32,6 +32,7 @@ async function bootstrap() {
 
   // Enable ValidationPipe for request validation
   app.useGlobalPipes(new ValidationPipe());
+  app.enableCors();
 
   await app.listen(process.env.PORT ?? 3000);
   Logger.log(`🚀 Server started on port ${process.env.PORT || 3000} `, 'Bootstrap');
