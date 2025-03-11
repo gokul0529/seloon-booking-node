@@ -8,3 +8,8 @@ export class CreateDepartmentDto {
 export class CreateDesignationDto {
     name: string;
 }
+
+export class CreateRoleDto {
+    name: string;
+    permissions: any[];
+}

@@ -1,0 +1,32 @@
+{
+   
+    "User": [
+      {
+        "aclKey": "user.create.own",
+        "label": "Create User"
+      },
+      {
+        "aclKey": "user.edit.own",
+        "label": "Edit User"
+      },
+      {
+        "aclKey": "user.view.own",
+        "label": "View User"
+      }
+    ],
+    "Role": [
+      { 
+        "aclKey": "role.create.own", 
+         "label": "Create Role"
+    },
+      {
+        "aclKey": "role.view.own",
+        "label": "View Role"
+      },
+      {
+        "aclKey": "role.edit.own",
+        "label": "Edit Role"
+      }
+    ]
+  }
+  

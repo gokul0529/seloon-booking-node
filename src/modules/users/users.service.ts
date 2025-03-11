@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { CreateDepartmentDto, CreateDesignationDto, CreateUserDto } from './dto/create-user.dto';
+import { CreateDepartmentDto, CreateDesignationDto, CreateRoleDto, CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { CreateOfficeLocationDto } from './dto/create-office-location.dto';
 import { InjectModel } from '@nestjs/mongoose';
@@ -8,15 +8,27 @@ import { User, UserDocument } from 'src/schemas/user.schema';
 import { OfficeLocation } from 'src/schemas/office-location.schema';
 import { Department } from 'src/schemas/department.schema';
 import { Designation } from 'src/schemas/designation.schema';
+import { Role } from 'src/schemas/role.schema';
+import * as fs from 'fs';
 
 @Injectable()
 export class UsersService {
+  private permissionsFile = './src/modules/auth/permissions/permissions.json';
+  private permissions: any[];
   constructor(
     @InjectModel(User.name) private userModel: Model<UserDocument>,
     @InjectModel(OfficeLocation.name) private officeLocationModel: Model<OfficeLocation>,
     @InjectModel(Department.name) private departmentModel: Model<Department>,
     @InjectModel(Designation.name) private designationModel: Model<Designation>,
-  ) { }
+    @InjectModel(Role.name) private roleModel: Model<Role>
+  ) {
+    try {
+      const fileContent = fs.readFileSync(this.permissionsFile, 'utf8');
+      this.permissions = JSON.parse(fileContent);
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
 
   async createOfficeLocation(userId: string, orgId: string, createOfficeLocationDto: CreateOfficeLocationDto) {
     const officeLocation = await this.officeLocationModel.create({
@@ -80,6 +92,26 @@ export class UsersService {
     return {
       message: 'Designations fetched successfully',
       data: designations
+    }
+  }
+
+  async getPermissions(orgId: string) {
+    return {
+      message: 'Permissions fetched successfully',
+      data: this.permissions
+    }
+  }
+
+  async createRole(userId: string, orgId: string, createRoleDto: CreateRoleDto) {
+    const role = await this.roleModel.create({
+      ...createRoleDto,
+      createdBy: new Types.ObjectId(userId),
+      orgId: new Types.ObjectId(orgId)
+    });
+
+    return {
+      message: 'Role created successfully',
+      data: role
     }
   }
 }

@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Req, Request } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { CreateDepartmentDto, CreateDesignationDto, CreateUserDto } from './dto/create-user.dto';
+import { CreateDepartmentDto, CreateDesignationDto, CreateRoleDto, CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { AccessTokenGuard } from '../auth/guards/access-token.guard';
 import { CreateOfficeLocationDto } from './dto/create-office-location.dto';
@@ -45,5 +45,19 @@ export class UsersController {
   @Get('get-designations/:departmentId')
   async getDesignations(@Request() req, @Param('departmentId') departmentId: string) {
     return this.usersService.getDesignations(req.user.orgId, departmentId);
+  }
+
+  // roles
+
+  @UseGuards(AccessTokenGuard)
+  @Get('get-permissions')
+  async getPermissions(@Request() req) {
+    return this.usersService.getPermissions(req.user.orgId);
+  }
+
+  @UseGuards(AccessTokenGuard)
+  @Post('create-role')
+  async createRole(@Request() req, @Body() createRoleDto: CreateRoleDto) {
+    return this.usersService.createRole(req.user.sub, req.user.orgId, createRoleDto);
   }
 }
