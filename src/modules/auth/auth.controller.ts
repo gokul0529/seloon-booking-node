@@ -15,6 +15,13 @@ export class AuthController {
   }
 
   @ApiBearerAuth('defaultBearerAuth')
+  @UseGuards(AccessTokenGuard)
+  @Get('me')
+  async me(@Request() req) {
+    return this.authService.me(req.user.sub);
+  }
+
+  @ApiBearerAuth('defaultBearerAuth')
   @UseGuards(RefreshTokenGuard)
   @Post('refresh-token')
   async refreshToken(@Request() req) {

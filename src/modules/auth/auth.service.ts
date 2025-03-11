@@ -30,6 +30,17 @@ export class AuthService {
     return tokens;
 
   }
+
+  async me(userId: string) {
+    const user = await this.userModel.findById(userId)
+      .populate('roleId', 'permissions')
+      .lean();
+    return {
+      message: 'User fetched successfully',
+      data: user
+    }
+  }
+
   private generateTokens(user: UserDocument) {
     const payload = {
       sub: user._id,
