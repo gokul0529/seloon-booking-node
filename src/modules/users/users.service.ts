@@ -29,7 +29,7 @@ export class UsersService {
   }
 
   async getOfficeLocations(orgId: string) {
-    const officeLocations = await this.officeLocationModel.find({ orgId: new Types.ObjectId(orgId) }).lean();
+    const officeLocations = await this.officeLocationModel.find({ orgId: new Types.ObjectId(orgId), isActive: true }).lean();
     return {
       message: 'Office locations fetched successfully',
       data: officeLocations
