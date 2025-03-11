@@ -129,7 +129,7 @@ export class UsersService {
 
     // Upload avatar to S3 if provided
     let avatarUrl: any = null
-    if (avatar) {
+    if (avatar != null && avatar && avatar?.size > 0) {
       const timestamp = Date.now();
       const originalFileName = avatar.originalname;
       const FileName = `${timestamp}_${originalFileName}`;
