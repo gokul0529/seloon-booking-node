@@ -1,17 +1,21 @@
 import { Injectable } from '@nestjs/common';
-import { CreateUserDto } from './dto/create-user.dto';
+import { CreateDepartmentDto, CreateDesignationDto, CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { CreateOfficeLocationDto } from './dto/create-office-location.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { User, UserDocument } from 'src/schemas/user.schema';
 import { OfficeLocation } from 'src/schemas/office-location.schema';
+import { Department } from 'src/schemas/department.schema';
+import { Designation } from 'src/schemas/designation.schema';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectModel(User.name) private userModel: Model<UserDocument>,
-    @InjectModel(OfficeLocation.name) private officeLocationModel: Model<OfficeLocation>
+    @InjectModel(OfficeLocation.name) private officeLocationModel: Model<OfficeLocation>,
+    @InjectModel(Department.name) private departmentModel: Model<Department>,
+    @InjectModel(Designation.name) private designationModel: Model<Designation>,
   ) { }
 
   async createOfficeLocation(userId: string, orgId: string, createOfficeLocationDto: CreateOfficeLocationDto) {
@@ -33,6 +37,49 @@ export class UsersService {
     return {
       message: 'Office locations fetched successfully',
       data: officeLocations
+    }
+  }
+
+  async createDepartment(userId: string, orgId: string, createDepartmentDto: CreateDepartmentDto) {
+    const department = await this.departmentModel.create({
+      ...createDepartmentDto,
+      createdBy: new Types.ObjectId(userId),
+      orgId: new Types.ObjectId(orgId)
+    });
+
+    return {
+      message: 'Department created successfully',
+      data: department
+    }
+  }
+
+  async getDepartments(orgId: string) {
+    const departments = await this.departmentModel.find({ orgId: new Types.ObjectId(orgId), isActive: true }).lean();
+    return {
+      message: 'Departments fetched successfully',
+      data: departments
+    }
+  }
+
+  async createDesignation(userId: string, orgId: string, departmentId: string, createDesignationDto: CreateDesignationDto) {
+    const designation = await this.designationModel.create({
+      ...createDesignationDto,
+      createdBy: new Types.ObjectId(userId),
+      orgId: new Types.ObjectId(orgId),
+      departmentId: new Types.ObjectId(departmentId)
+    });
+
+    return {
+      message: 'Designation created successfully',
+      data: designation
+    }
+  }
+
+  async getDesignations(orgId: string, departmentId: string) {
+    const designations = await this.designationModel.find({ orgId: new Types.ObjectId(orgId), departmentId: new Types.ObjectId(departmentId), isActive: true }).lean();
+    return {
+      message: 'Designations fetched successfully',
+      data: designations
     }
   }
 }
