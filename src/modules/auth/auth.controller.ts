@@ -1,34 +1,33 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Request } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { CreateAuthDto } from './dto/create-auth.dto';
-import { UpdateAuthDto } from './dto/update-auth.dto';
+import { LoginDto } from './dto/login.dto';
+import { AccessTokenGuard } from './guards/access-token.guard';
+import { ResetPasswordDto } from './dto/reset-password.dto';
+import { ApiBearerAuth } from '@nestjs/swagger';
+import { RefreshTokenGuard } from './guards/refresh-token.guard';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
-
-  @Post()
-  create(@Body() createAuthDto: CreateAuthDto) {
-    return this.authService.create(createAuthDto);
+  constructor(private readonly authService: AuthService) { }
+  @Post('login')
+  async login(@Body() loginDto: LoginDto) {
+    return this.authService.login(loginDto);
   }
 
-  @Get()
-  findAll() {
-    return this.authService.findAll();
+  @ApiBearerAuth('defaultBearerAuth')
+  @UseGuards(RefreshTokenGuard)
+  @Post('refresh-token')
+  async refreshToken(@Request() req) {
+    return this.authService.generateAccessToken(req.user);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.authService.findOne(+id);
-  }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateAuthDto: UpdateAuthDto) {
-    return this.authService.update(+id, updateAuthDto);
-  }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.authService.remove(+id);
+  @ApiBearerAuth('defaultBearerAuth')
+  @UseGuards(AccessTokenGuard)
+  @Post('reset-password')
+  async resetPassword(@Request() req, @Body() resetPasswordDto: ResetPasswordDto) {
+    const userId = req.user.sub;
+    return this.authService.resetPassword(userId, resetPasswordDto);
   }
 }
