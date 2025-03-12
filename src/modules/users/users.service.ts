@@ -184,4 +184,41 @@ export class UsersService {
       data: user
     }
   }
+
+  async updateUser(loginUserId: string, orgId: string, userId: string, updateUserDto: UpdateUserDto, avatar: Express.Multer.File) {
+    // Upload avatar to S3 if provided
+
+
+    const user = await this.userModel.findOne({ _id: new Types.ObjectId(userId), orgId: new Types.ObjectId(orgId) });
+    if (!user) {
+      throw new Error('User not found');
+    }
+    if (avatar != null && avatar && avatar?.size > 0) {
+      const timestamp = Date.now();
+      const originalFileName = avatar.originalname;
+      const FileName = `${timestamp}_${originalFileName}`;
+      const folder = `avatars/${orgId}`;
+      user.avatarUrl = await this.s3Service.uploadFile(avatar, folder, FileName);
+    }
+    if (updateUserDto.roleId) {
+      user.roleId = new Types.ObjectId(updateUserDto.roleId);
+    }
+
+    if (updateUserDto.departmentId) {
+      updateUserDto.departmentId = new Types.ObjectId(updateUserDto.departmentId);
+    }
+
+    if (updateUserDto.designationId) {
+      user.designationId = new Types.ObjectId(updateUserDto.designationId);
+    }
+
+    const updatedValue = await this.userModel.findOneAndUpdate({ _id: new Types.ObjectId(userId), orgId: new Types.ObjectId(orgId) },
+      { ...updateUserDto, avatarUrl: user.avatarUrl }, { new: true }).lean();
+
+    return {
+      message: 'User updated successfully',
+      data: updatedValue
+    }
+
+  }
 }

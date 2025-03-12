@@ -119,4 +119,37 @@ export class UsersController {
   async profileView(@Request() req, @Param('userId') userId: string) {
     return this.usersService.profileView(req.user.orgId, userId);
   }
+
+  @UseGuards(AccessTokenGuard)
+  @Patch('update-user/:userId')
+  @ApiConsumes('multipart/form-data')
+  @ApiOperation({ summary: 'Create a new user with avatar' })
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        name: { type: 'string' },
+        email: { type: 'string' },
+        employeeId: { type: 'string' },
+        officeLocationId: { type: 'string' },
+        departmentId: { type: 'string' },
+        designationId: { type: 'string' },
+        roleId: { type: 'string' },
+        isActive: { type: 'boolean' },
+        avatar: {
+          type: 'string',
+          format: 'binary',
+          description: 'User avatar image'
+        }
+      }
+    }
+  })
+  @UseInterceptors(FileInterceptor('avatar'))
+  async updateUser(@Request() req,
+    @Param('userId') userId: string,
+    @Body() updateUserDto: UpdateUserDto,
+    @UploadedFile() avatar: Express.Multer.File
+  ) {
+    return this.usersService.updateUser(req.user.sub, req.user.orgId, userId, updateUserDto, avatar);
+  }
 }

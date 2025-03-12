@@ -1,14 +1,14 @@
-import { off } from "process";
+import { Types } from "mongoose";
 import { PermissionCollection } from "src/schemas/role.schema";
 
 export class CreateUserDto {
     name: string;
     email: string;
-    employeeId: string;
-    officeLocationId: string;
-    departmentId: string;
-    designationId: string;
-    roleId: string;
+    employeeId: Types.ObjectId;
+    officeLocationId: Types.ObjectId;
+    departmentId: Types.ObjectId;
+    designationId: Types.ObjectId;
+    roleId: Types.ObjectId;
     isActive: boolean;
 }
 
