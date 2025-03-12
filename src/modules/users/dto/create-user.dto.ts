@@ -28,4 +28,5 @@ export class CreateRoleDto {
 export class PaginationDto {
     page: number;
     limit: number;
+    isActive: boolean;
 }

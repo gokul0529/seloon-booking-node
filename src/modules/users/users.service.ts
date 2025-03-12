@@ -156,8 +156,8 @@ export class UsersService {
     const page = query.page || 1;
     const limit = query.limit || 10;
     const skip = (page - 1) * limit;
-    const users = await this.userModel.find({ orgId: new Types.ObjectId(orgId) }).select('id name email avatarUrl').skip(skip).limit(limit).lean();
-    const total = await this.userModel.countDocuments({ orgId: new Types.ObjectId(orgId) });
+    const users = await this.userModel.find({ orgId: new Types.ObjectId(orgId), isActive: query.isActive }).select('id name email avatarUrl').skip(skip).limit(limit).lean();
+    const total = await this.userModel.countDocuments({ orgId: new Types.ObjectId(orgId), isActive: query.isActive });
     return {
       message: 'Users fetched successfully',
       data: users,
