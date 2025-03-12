@@ -101,4 +101,9 @@ export class AuthService {
     return { message: 'Password successfully updated' };
   }
 
+  async logout(userId: string) {
+    await this.userModel.updateOne({ _id: userId }, { $set: { refreshToken: null } });
+    return { message: 'Logout successfully' };
+  }
+
 }

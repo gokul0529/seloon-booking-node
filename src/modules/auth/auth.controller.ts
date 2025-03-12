@@ -37,4 +37,13 @@ export class AuthController {
     const userId = req.user.sub;
     return this.authService.resetPassword(userId, resetPasswordDto);
   }
+
+  //logout
+  @ApiBearerAuth('defaultBearerAuth')
+  @UseGuards(AccessTokenGuard)
+  @Post('logout')
+  async logout(@Request() req) {
+    return this.authService.logout(req.user.sub);
+  }
+
 }
