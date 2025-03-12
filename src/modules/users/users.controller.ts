@@ -107,4 +107,10 @@ export class UsersController {
   async getUsers(@Request() req, @Query() query: PaginationDto) {
     return this.usersService.getUsers(req.user.orgId, query);
   }
+
+  @UseGuards(AccessTokenGuard)
+  @Get('get-user/:userId')
+  async getUser(@Request() req, @Param('userId') userId: string) {
+    return this.usersService.getUser(req.user.orgId, userId);
+  }
 }

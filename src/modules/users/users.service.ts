@@ -164,4 +164,12 @@ export class UsersService {
       total,
     }
   }
+
+  async getUser(orgId: string, userId: string) {
+    const user = await this.userModel.findOne({ _id: new Types.ObjectId(userId), orgId: new Types.ObjectId(orgId) }).lean();
+    return {
+      message: 'User fetched successfully',
+      data: user
+    }
+  }
 }
