@@ -64,7 +64,7 @@ export class UsersController {
   }
 
   @UseGuards(AccessTokenGuard)
-  @Post('get-roles')
+  @Get('get-roles')
   async getRoles(@Request() req) {
     return this.usersService.getRoles(req.user.orgId);
   }
