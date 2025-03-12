@@ -49,17 +49,17 @@ export class AuthService {
       roleId: user.roleId,
     };
 
-    const access_token = this.jwtService.sign(payload, {
+    const accessToken = this.jwtService.sign(payload, {
       secret: process.env.JWT_ACCESS_SECRET,
       expiresIn: process.env.JWT_ACCESS_EXPIRATION,
     });
 
-    const refresh_token = this.jwtService.sign(payload, {
+    const refreshToken = this.jwtService.sign(payload, {
       secret: process.env.JWT_REFRESH_SECRET,
       expiresIn: process.env.JWT_REFRESH_EXPIRATION,
     });
 
-    return { access_token, refresh_token };
+    return { accessToken, refreshToken };
   }
 
   generateAccessToken(user: UserDocument) {
