@@ -152,4 +152,10 @@ export class UsersController {
   ) {
     return this.usersService.updateUser(req.user.sub, req.user.orgId, userId, updateUserDto, avatar);
   }
+
+  @UseGuards(AccessTokenGuard)
+  @Delete('delete-user/:userId')
+  async deleteUser(@Request() req, @Param('userId') userId: string) {
+    return this.usersService.deleteUser(req.user.sub, req.user.orgId, userId);
+  }
 }

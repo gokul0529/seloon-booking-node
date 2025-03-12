@@ -221,4 +221,20 @@ export class UsersService {
     }
 
   }
+
+  async deleteUser(loginUserId: string, orgId: string, userId: string) {
+    const user = await this.userModel.findOne({ _id: new Types.ObjectId(userId), orgId: new Types.ObjectId(orgId) });
+    if (!user) {
+      throw new Error('User not found');
+    }
+    user.isActive = true;
+    user.isDeleted = true;
+    user.updatedBy = new Types.ObjectId(loginUserId);
+    await user.save();
+    return {
+      message: 'User deleted successfully',
+      // data: user
+    }
+
+  }
 }

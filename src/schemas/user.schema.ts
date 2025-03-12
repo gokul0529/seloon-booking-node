@@ -98,6 +98,9 @@ export class User {
 
     @Prop()
     firebaseToken?: string;
+
+    @Prop({ type: Boolean, default: false, select: false })
+    isDeleted: boolean;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
