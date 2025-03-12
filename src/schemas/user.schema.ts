@@ -77,9 +77,6 @@ export class User {
     // @Prop({ type: [PermissionCollection], default: [] })
     // permissions: PermissionCollection[];
 
-    @Prop({ type: String, unique: true })
-    uniqueCode?: string;
-
     @Prop({ type: Number, default: 0 })
     notificationCount: number;
 
