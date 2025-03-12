@@ -84,6 +84,7 @@ export class UsersController {
         departmentId: { type: 'string' },
         designationId: { type: 'string' },
         roleId: { type: 'string' },
+        isActive: { type: 'boolean' },
         avatar: {
           type: 'string',
           format: 'binary',
