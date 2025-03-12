@@ -2,6 +2,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument, Types } from 'mongoose';
 import { IsArray, IsEmail, IsEnum, IsNotEmpty } from 'class-validator';
 import * as bcrypt from 'bcrypt';
+import { timestamp } from 'rxjs';
 
 export enum UserType {
     ROOT = 'root',
@@ -73,6 +74,9 @@ export class User {
 
     @Prop({ select: false })
     otp?: string;
+
+    @Prop({ type: Date, default: Date.now })
+    lastActiveAt: Date;
 
     // @Prop({ type: [PermissionCollection], default: [] })
     // permissions: PermissionCollection[];

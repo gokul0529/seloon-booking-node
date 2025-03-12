@@ -113,4 +113,10 @@ export class UsersController {
   async getUser(@Request() req, @Param('userId') userId: string) {
     return this.usersService.getUser(req.user.orgId, userId);
   }
+
+  @UseGuards(AccessTokenGuard)
+  @Get('profile/:userId')
+  async profileView(@Request() req, @Param('userId') userId: string) {
+    return this.usersService.profileView(req.user.orgId, userId);
+  }
 }

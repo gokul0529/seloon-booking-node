@@ -172,4 +172,16 @@ export class UsersService {
       data: user
     }
   }
+
+  async profileView(orgId: string, userId: string) {
+    const user = await this.userModel.findOne({
+      _id: new Types.ObjectId(userId), orgId: new Types.ObjectId(orgId)
+    })
+      .select('_id name avatarUrl isActive email employeeId lastActiveAt')
+      .populate('roleId', 'name _id').lean();
+    return {
+      message: 'User fetched successfully',
+      data: user
+    }
+  }
 }
