@@ -9,6 +9,7 @@ export class CreateUserDto {
     departmentId: string;
     designationId: string;
     roleId: string;
+    isActive: boolean;
 }
 
 
