@@ -158,4 +158,10 @@ export class UsersController {
   async deleteUser(@Request() req, @Param('userId') userId: string) {
     return this.usersService.deleteUser(req.user.sub, req.user.orgId, userId);
   }
+
+  @UseGuards(AccessTokenGuard)
+  @Patch('deactivate-user/:userId')
+  async deactivateUser(@Request() req, @Param('userId') userId: string) {
+    return this.usersService.deactivateUser(req.user.sub, req.user.orgId, userId);
+  }
 }
