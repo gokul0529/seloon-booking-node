@@ -82,13 +82,13 @@ export class S3Service {
             // ACL: 'public-read',
         };
         try {
-            console.log(input);
+            // console.log(input);
             const response: PutObjectCommandOutput = await this.s3.send(
                 new PutObjectCommand(input),
             );
-            console.log(input);
+            // console.log(input);
             if (response.$metadata.httpStatusCode === 200) {
-                console.log(`https://${bucket}.s3.${this.region}.amazonaws.com/${key}`);
+                // console.log(`https://${bucket}.s3.${this.region}.amazonaws.com/${key}`);
 
                 return `https://${bucket}.s3.${this.region}.amazonaws.com/${key}`;
             }
