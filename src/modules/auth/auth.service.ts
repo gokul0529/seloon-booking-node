@@ -6,12 +6,14 @@ import { Model } from 'mongoose';
 import { ResetPasswordDto } from './dto/reset-password.dto';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
+import { PermissionCollection, Role, Permission } from 'src/schemas/role.schema';
 
 @Injectable()
 export class AuthService {
   constructor(
     private jwtService: JwtService,
-    @InjectModel(User.name) private userModel: Model<UserDocument>
+    @InjectModel(User.name) private userModel: Model<UserDocument>,
+    @InjectModel(Role.name) private roleModel: Model<Role>
   ) { }
 
   async login(loginDto: LoginDto) {
@@ -25,9 +27,24 @@ export class AuthService {
     // Step 2: Check password
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) throw new BadRequestException('Invalid credentials');
+    // First, define userPermissions with the correct type
+    const userPermissions: string[] = [];
 
-    const tokens = this.generateTokens(user);
+    const role = await this.roleModel.findById(user.roleId).lean();
+    if (role && role.permissions) {
+      // Correctly access the permissions array
+      role.permissions.forEach((collection: PermissionCollection) => {
+        // For each permission collection, iterate through its permissions
+        collection.permissions.forEach((permission: Permission) => {
+          // Add the aclKey to the permissions array
+          userPermissions.push(permission.aclKey);
+        });
+      });
+    }
+
+    const tokens = this.generateTokens(user, userPermissions);
     return tokens;
+
 
   }
 
@@ -41,12 +58,13 @@ export class AuthService {
     }
   }
 
-  private generateTokens(user: UserDocument) {
+  private generateTokens(user: UserDocument, permissions: string[]) {
     const payload = {
       sub: user._id,
       email: user.email,
       orgId: user.orgId,
       roleId: user.roleId,
+      permissions
     };
 
     const accessToken = this.jwtService.sign(payload, {

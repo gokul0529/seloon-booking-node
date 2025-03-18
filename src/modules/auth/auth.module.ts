@@ -9,10 +9,12 @@ import { RefreshTokenStrategy } from './strategies/refresh-token.strategy';
 import { PassportModule } from '@nestjs/passport';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { UsersModule } from '../users/users.module';
+import { Role, RoleSchema } from 'src/schemas/role.schema';
 
 @Module({
   imports: [
-    MongooseModule.forFeature([{ name: User.name, schema: UserSchema }
+    MongooseModule.forFeature([{ name: User.name, schema: UserSchema },
+    { name: Role.name, schema: RoleSchema }
     ]),
     PassportModule.register({ defaultStrategy: 'jwt-refresh' }),
     JwtModule.registerAsync({
