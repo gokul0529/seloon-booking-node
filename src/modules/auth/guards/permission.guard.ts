@@ -9,13 +9,16 @@ export class PermissionGuard implements CanActivate {
 
     // Check if the user has the required permissions
     private matchPermissions = (permissions: string[], userPermissions: string[], request: any, decodedToken: any): boolean => {
+
         for (const permission of permissions) {
+
             const userPermission = userPermissions.find(p => p.startsWith(permission));
+
             if (userPermission) {
+
                 if (userPermission.endsWith('.any')) {
                     return true;
                 } else if (userPermission.endsWith('.own')) {
-
                     // Update the request with ownedBy field
                     request.ownedBy = new Types.ObjectId(decodedToken.sub);
                     return true;
@@ -40,7 +43,6 @@ export class PermissionGuard implements CanActivate {
         const decodedToken = this.jwtService.decode(token);
 
         const userPermissions = decodedToken['permissions'] || [];
-
 
         // Check if the user has the required permissions
         return this.matchPermissions(permissions, userPermissions, request, decodedToken);

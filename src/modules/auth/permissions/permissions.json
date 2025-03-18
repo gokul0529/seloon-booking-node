@@ -1,32 +1,35 @@
-{
-   
-    "User": [
+
+ [ 
+  {
+    "category": "Project Management",
+    "permissions": [
       {
-        "aclKey": "user.create.own",
-        "label": "Create User"
+        "aclKey": "project:create.any",
+        "label": "Create Project"
       },
       {
-        "aclKey": "user.edit.own",
-        "label": "Edit User"
+        "aclKey": "project:delete.any",
+        "label": "Delete Project"
       },
       {
-        "aclKey": "user.view.own",
-        "label": "View User"
+        "aclKey": "project:edit.any",
+        "label": "Edit Project"
       }
-    ],
-    "Role": [
-      { 
-        "aclKey": "role.create.own", 
-         "label": "Create Role"
-    },
+    ]
+  },
+  {
+    "category": "User Management",
+    "permissions": [
       {
-        "aclKey": "role.view.own",
-        "label": "View Role"
+        "aclKey": "user:invite.any",
+        "label": "Invite Users"
       },
       {
-        "aclKey": "role.edit.own",
-        "label": "Edit Role"
+        "aclKey": "user:delete.any",
+        "label": "Remove Users"
       }
     ]
   }
+]
+  
   

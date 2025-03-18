@@ -32,8 +32,12 @@ export class AuthService {
 
     const role = await this.roleModel.findById(user.roleId).lean();
     if (role && role.permissions) {
+      console.log(role.permissions);
+
       // Correctly access the permissions array
       role.permissions.forEach((collection: PermissionCollection) => {
+        console.log('collection', collection);
+
         // For each permission collection, iterate through its permissions
         collection.permissions.forEach((permission: Permission) => {
           // Add the aclKey to the permissions array

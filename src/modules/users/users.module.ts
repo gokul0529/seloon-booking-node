@@ -10,6 +10,7 @@ import { Department, DepartmentSchema } from 'src/schemas/department.schema';
 import { Designation, DesignationSchema } from 'src/schemas/designation.schema';
 import { S3Service } from '../common/services/s3.service';
 import { ConfigModule } from '@nestjs/config'; // Import this
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { ConfigModule } from '@nestjs/config'; // Import this
       { name: Department.name, schema: DepartmentSchema },
       { name: Designation.name, schema: DesignationSchema },
     ]),
+    JwtModule
   ],
   controllers: [UsersController],
   providers: [UsersService, S3Service],

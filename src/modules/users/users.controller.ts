@@ -6,7 +6,8 @@ import { AccessTokenGuard } from '../auth/guards/access-token.guard';
 import { CreateOfficeLocationDto } from './dto/create-office-location.dto';
 import { ApiBearerAuth, ApiBody, ApiConsumes, ApiOperation } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { query } from 'express';
+import { PermissionGuard } from '../auth/guards/permission.guard';
+import { Permissions } from '../auth/decorator/permissions.decorator';
 
 @ApiBearerAuth('defaultBearerAuth')
 @Controller('users')
@@ -19,7 +20,8 @@ export class UsersController {
     return this.usersService.createOfficeLocation(req.user.sub, req.user.orgId, createOfficeLocationDto);
   }
 
-  @UseGuards(AccessTokenGuard)
+  @UseGuards(AccessTokenGuard, PermissionGuard)
+  // @Permissions('user:invite')
   @Get('get-office-locations')
   async getOfficeLocations(@Request() req) {
     return this.usersService.getOfficeLocations(req.user.orgId);
@@ -31,7 +33,8 @@ export class UsersController {
     return this.usersService.createDepartment(req.user.sub, req.user.orgId, createDepartmentDto);
   }
 
-  @UseGuards(AccessTokenGuard)
+  @UseGuards(AccessTokenGuard, PermissionGuard)
+  // @Permissions('user:delete')
   @Get('get-departments')
   async getDepartments(@Request() req) {
     return this.usersService.getDepartments(req.user.orgId);
