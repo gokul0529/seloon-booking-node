@@ -1,8 +1,8 @@
 {
-  "name": "nxt-projects-backend",
+  "name": "on-task-backend",
   "version": "0.0.1",
   "description": "",
-  "author": "",
+  "author": "sreesayanth",
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
