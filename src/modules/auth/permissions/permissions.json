@@ -1,0 +1,35 @@
+
+ [ 
+  {
+    "category": "Project Management",
+    "permissions": [
+      {
+        "aclKey": "project:create.any",
+        "label": "Create Project"
+      },
+      {
+        "aclKey": "project:delete.any",
+        "label": "Delete Project"
+      },
+      {
+        "aclKey": "project:edit.any",
+        "label": "Edit Project"
+      }
+    ]
+  },
+  {
+    "category": "User Management",
+    "permissions": [
+      {
+        "aclKey": "user:invite.any",
+        "label": "Invite Users"
+      },
+      {
+        "aclKey": "user:delete.any",
+        "label": "Remove Users"
+      }
+    ]
+  }
+]
+  
+  
