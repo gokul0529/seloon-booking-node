@@ -1,9 +1,9 @@
 
-cd /var/www/html/nxt-projects/nxt-projects-backend
+# cd /var/www/html/nxt-projects/nxt-projects-backend
 
 # Git
-git checkout dev
-git pull origin dev
+# git checkout dev
+# git pull origin dev
  
 # Install dependencies
 # npm install
@@ -12,4 +12,4 @@ git pull origin dev
 # npm run build
 
 # restart pm2
-pm2 restart nxt-projects-api
+# pm2 restart nxt-projects-api
