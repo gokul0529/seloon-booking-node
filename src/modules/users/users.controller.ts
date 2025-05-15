@@ -3,7 +3,6 @@ import { UsersService } from './users.service';
 import { CreateDepartmentDto, CreateDesignationDto, CreateUserDto, PaginationDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { AccessTokenGuard } from '../auth/guards/access-token.guard';
-import { CreateOfficeLocationDto } from './dto/create-office-location.dto';
 import { ApiBearerAuth, ApiBody, ApiConsumes, ApiOperation } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { PermissionGuard } from '../auth/guards/permission.guard';

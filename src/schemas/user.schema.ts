@@ -8,6 +8,7 @@ export enum UserType {
     ROOT = 'root',
     ADMIN = 'admin',
     USER = 'user',
+    EMPLOYEE = 'employee',
 }
 
 // // Define the Permission schema

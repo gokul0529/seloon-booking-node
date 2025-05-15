@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { CreateDepartmentDto, CreateDesignationDto, CreateUserDto, PaginationDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { CreateOfficeLocationDto } from './dto/create-office-location.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { User, UserDocument } from 'src/schemas/user.schema';
