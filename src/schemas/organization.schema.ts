@@ -9,9 +9,6 @@ export class Organization extends Document {
     @Prop({ required: true, unique: true })
     domain: string; // e.g., example.com
 
-    //   @Prop({ type: [{ type: Types.ObjectId, ref: 'Workspace' }] })
-    //   workspaces: Types.ObjectId[];
-
     @Prop({ type: Types.ObjectId, ref: 'User', required: true }) // Organization Owner
     owner: Types.ObjectId;
 

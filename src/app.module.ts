@@ -4,12 +4,16 @@ import { AppService } from './app.service';
 import { DatabaseModule } from './database/database.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { UsersModule } from './modules/users/users.module';
+import { EmailIntegrationModule } from './modules/email-integration/email-integration.module';
+import { EmailAuthModule } from './modules/email-auth/email-auth.module';
 
 @Module({
   imports: [
     DatabaseModule,
     AuthModule,
-    UsersModule
+    UsersModule,
+    EmailIntegrationModule,
+    EmailAuthModule
   ],
   controllers: [AppController],
   providers: [AppService],
