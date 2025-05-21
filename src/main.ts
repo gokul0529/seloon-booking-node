@@ -10,10 +10,10 @@ async function bootstrap() {
   // app.useGlobalFilters(new HttpExceptionFilter());
 
   const config = new DocumentBuilder()
-    .setTitle('nex-projects API')
-    .setDescription('nex-projects API documentation')
+    .setTitle('OnTask API')
+    .setDescription('OnTask API documentation')
     .setVersion('0.0.101')
-    .addTag('projects')
+    .addTag('OnTask')
     .addBearerAuth(
       {
         description: 'Default JWT Authorization',
