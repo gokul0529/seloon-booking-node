@@ -3,5 +3,7 @@ import { EmailAuthService } from './email-auth.service';
 
 @Controller('email-auth')
 export class EmailAuthController {
-  constructor(private readonly emailAuthService: EmailAuthService) {}
+  constructor(private readonly emailAuthService: EmailAuthService) { }
+
+
 }

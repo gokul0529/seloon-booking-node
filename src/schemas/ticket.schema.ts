@@ -7,7 +7,7 @@ export class Ticket extends Document {
     @Prop({ required: true })
     name: string;
 
-    @Prop({ type: String, })
+    @Prop({ type: String })
     description: string;
 
     @Prop({ type: Types.ObjectId, ref: 'Organization', required: true, index: true })
@@ -22,19 +22,25 @@ export class Ticket extends Document {
     @Prop({ type: Types.ObjectId, ref: 'User' })
     contactPersonId: Types.ObjectId;
 
-    @Prop({ type: String, })
+    @Prop({ type: String })
+    email: string;
+
+    @Prop({ type: String })
+    phone: string;
+
+    @Prop({ type: String })
     workType: string;
 
-    @Prop({ type: String, })
+    @Prop({ type: String })
     status: string;
 
-    @Prop({ type: String, })
+    @Prop({ type: String })
     priority: string;
 
-    @Prop({ type: String, })
+    @Prop({ type: String })
     severity: string;
 
-    @Prop({ type: Types.ObjectId, ref: 'TicketClassification', })
+    @Prop({ type: Types.ObjectId, ref: 'TicketClassification' })
     ticketClassificationId: Types.ObjectId;
 
     @Prop({ type: Date })
