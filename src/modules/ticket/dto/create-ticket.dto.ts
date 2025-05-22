@@ -13,5 +13,6 @@ export class CreateTicketDto {
     ticketClassificationId: string;
     tags: string[];
     attachments: string[];
+    assignedTo: string[];
 
 }

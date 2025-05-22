@@ -10,3 +10,5 @@ export class TicketClassification extends Document {
     @Prop({ type: Types.ObjectId, ref: 'Organization', required: true, index: true })
     orgId: Types.ObjectId;
 }
+export const TicketClassificationSchema = SchemaFactory.createForClass(TicketClassification);
+export type TicketClassificationDocument = TicketClassification & Document;

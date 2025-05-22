@@ -1,7 +1,8 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document, Types } from 'mongoose';
+import { Document, HydratedDocument, Types } from 'mongoose';
 
 
+export type CustomerDocument = HydratedDocument<Customer>;
 @Schema({ timestamps: true })
 export class Customer extends Document {
     @Prop({ required: true })
@@ -13,3 +14,5 @@ export class Customer extends Document {
     @Prop({ default: true })
     isActive: boolean;
 }
+
+export const CustomerSchema = SchemaFactory.createForClass(Customer);

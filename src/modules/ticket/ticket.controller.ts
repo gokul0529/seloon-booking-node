@@ -1,32 +1,32 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Request } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Request, Query } from '@nestjs/common';
 import { TicketService } from './ticket.service';
 import { CreateTicketDto } from './dto/create-ticket.dto';
 import { UpdateTicketDto } from './dto/update-ticket.dto';
 import { AccessTokenGuard } from '../auth/guards/access-token.guard';
 import { ApiBearerAuth } from '@nestjs/swagger';
-
+import { GetTicketDto } from './dto/get-ticket.dto';
+@ApiBearerAuth('defaultBearerAuth')
 @Controller('ticket')
 export class TicketController {
   constructor(private readonly ticketService: TicketService) { }
 
-  @ApiBearerAuth('defaultBearerAuth')
+
   @UseGuards(AccessTokenGuard)
   @Post('create')
   create(@Request() req, @Body() createTicketDto: CreateTicketDto) {
-    console.log('createTicketDto', createTicketDto);
-
-    return this.ticketService.create(req.user.sub, req.user.orgId, createTicketDto);
+    return this.ticketService.createTicket(req.user.sub, req.user.orgId, createTicketDto);
   }
 
-
-  @Get()
-  findAll() {
-    return this.ticketService.findAll();
+  @UseGuards(AccessTokenGuard)
+  @Get('get-all')
+  findAll(@Request() req, @Query() getTicketDto: GetTicketDto) {
+    return this.ticketService.findAllTickets(req.user.sub, req.user.orgId, getTicketDto);
   }
 
-  @Get(':id')
+  @UseGuards(AccessTokenGuard)
+  @Get('get/:id')
   findOne(@Param('id') id: string) {
-    return this.ticketService.findOne(+id);
+    return this.ticketService.findTicketById(id);
   }
 
   @Patch(':id')
@@ -34,8 +34,5 @@ export class TicketController {
     return this.ticketService.update(+id, updateTicketDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.ticketService.remove(+id);
-  }
+
 }
