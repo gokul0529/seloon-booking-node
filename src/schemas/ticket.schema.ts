@@ -1,9 +1,46 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document, Types } from 'mongoose';
+import { Document, HydratedDocument, Types } from 'mongoose';
 
+export enum Priority {
+    LOW = 'low',
+    MEDIUM = 'medium',
+    HIGH = 'high',
+}
+
+export enum Severity {
+    LOW = 'low',
+    MEDIUM = 'medium',
+    HIGH = 'high',
+}
+
+export enum Status {
+    OPEN = 'open',
+    REOPENED = 'reopened',
+    IN_PROGRESS = 'in_progress',
+    RESOLVED = 'resolved',
+    CLOSED = 'closed',
+}
+
+export enum Channel {
+    EMAIL = 'email',
+    CHAT = 'chat',
+}
+
+export enum WorkType {
+    ONSITE = 'onsite',
+    REMOTE = 'remote',
+    SELF_SERVICE = 'self_service',
+    OTHER = 'other',
+}
+
+export type TicketDocument = HydratedDocument<Ticket>;
 
 @Schema({ timestamps: true })
 export class Ticket extends Document {
+
+    @Prop({ type: String, default: 'D-3-T1198' })
+    uniqueCode: string;
+
     @Prop({ required: true })
     name: string;
 
@@ -23,22 +60,28 @@ export class Ticket extends Document {
     contactPersonId: Types.ObjectId;
 
     @Prop({ type: String })
+    contactPersonName: string;
+
+    @Prop({ type: String })
     email: string;
 
     @Prop({ type: String })
     phone: string;
 
-    @Prop({ type: String })
-    workType: string;
+    @Prop({ type: String, enum: Channel, default: Channel.EMAIL })
+    channel: Channel;
 
-    @Prop({ type: String })
-    status: string;
+    @Prop({ type: String, enum: WorkType, default: WorkType.REMOTE })
+    workType: WorkType;
 
-    @Prop({ type: String })
-    priority: string;
+    @Prop({ type: String, enum: Status, default: Status.OPEN })
+    status: Status;
 
-    @Prop({ type: String })
-    severity: string;
+    @Prop({ type: String, enum: Priority, default: Priority.LOW })
+    priority: Priority;
+
+    @Prop({ type: String, enum: Severity, default: Severity.LOW })
+    severity: Severity;
 
     @Prop({ type: Types.ObjectId, ref: 'TicketClassification' })
     ticketClassificationId: Types.ObjectId;
@@ -57,3 +100,5 @@ export class Ticket extends Document {
 
 
 }
+
+export const TicketSchema = SchemaFactory.createForClass(Ticket);

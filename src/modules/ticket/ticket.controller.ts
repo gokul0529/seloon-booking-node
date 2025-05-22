@@ -1,16 +1,23 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Request } from '@nestjs/common';
 import { TicketService } from './ticket.service';
 import { CreateTicketDto } from './dto/create-ticket.dto';
 import { UpdateTicketDto } from './dto/update-ticket.dto';
+import { AccessTokenGuard } from '../auth/guards/access-token.guard';
+import { ApiBearerAuth } from '@nestjs/swagger';
 
 @Controller('ticket')
 export class TicketController {
-  constructor(private readonly ticketService: TicketService) {}
+  constructor(private readonly ticketService: TicketService) { }
 
-  @Post()
-  create(@Body() createTicketDto: CreateTicketDto) {
-    return this.ticketService.create(createTicketDto);
+  @ApiBearerAuth('defaultBearerAuth')
+  @UseGuards(AccessTokenGuard)
+  @Post('create')
+  create(@Request() req, @Body() createTicketDto: CreateTicketDto) {
+    console.log('createTicketDto', createTicketDto);
+
+    return this.ticketService.create(req.user.sub, req.user.orgId, createTicketDto);
   }
+
 
   @Get()
   findAll() {
