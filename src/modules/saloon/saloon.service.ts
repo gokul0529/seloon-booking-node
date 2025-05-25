@@ -218,6 +218,28 @@ export class SaloonService {
         };
     }
 
+    async deleteSaloon(saloonId: string) {
+        const saloon = await this.saloonModel.findById(saloonId);
+        if (!saloon) throw new BadRequestException('Saloon not found');
+
+        await this.saloonModel.deleteOne({ _id: saloonId });
+        await this.userModel.deleteMany({ saloonId: saloonId }); // Delete all employees associated with the saloon
+
+        return {
+            message: 'Saloon deleted successfully',
+        };
+    }
+
+    async deleteEmployee(employeeId: string) {
+        const employee = await this.userModel.findById(employeeId);
+        if (!employee) throw new BadRequestException('Employee not found');
+        if (employee.userType !== UserType.EMPLOYEE) throw new BadRequestException('User is not an employee');
+
+        await this.userModel.deleteOne({ _id: employeeId });
+        return {
+            message: 'Employee deleted successfully',
+        };
+    }
 
 
 

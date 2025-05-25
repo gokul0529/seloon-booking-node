@@ -3,7 +3,7 @@ import { CreateDepartmentDto, CreateDesignationDto, CreateUserDto, PaginationDto
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
-import { User, UserDocument } from 'src/schemas/user.schema';
+import { User, UserDocument, UserType } from 'src/schemas/user.schema';
 import * as fs from 'fs';
 import { S3Service } from '../common/services/s3.service';
 
@@ -155,7 +155,7 @@ export class UsersService {
     if (existEmail) {
       throw new Error('Email already exists');
     }
-    const user = await this.userModel.create(CreateUserDto);
+    const user = await this.userModel.create({ ...CreateUserDto, userType: UserType.USER });
     return {
       message: 'User created successfully',
       data: user

@@ -1,9 +1,11 @@
-import { Body, Controller, Get, Post, UseGuards, Request, Query, Patch } from '@nestjs/common';
+import { Body, Controller, Get, Post, UseGuards, Request, Query, Patch, Delete, Param } from '@nestjs/common';
 import { SaloonService } from './saloon.service';
 import { AddSaloonEmployeeDto, CreateSaloonDto, PaginationDto } from './dto/create-saloon.dto';
 import { AccessTokenGuard } from '../auth/guards/access-token.guard';
 import { CreateBookSaloonDto } from './dto/book-saloon.dto';
+import { ApiBearerAuth } from '@nestjs/swagger';
 
+@ApiBearerAuth('defaultBearerAuth')
 @Controller('saloon')
 export class SaloonController {
   constructor(private readonly saloonService: SaloonService) { }
@@ -59,10 +61,17 @@ export class SaloonController {
   }
 
 
+  @UseGuards(AccessTokenGuard)
+  @Delete('saloon/:saloonId')
+  async deleteSaloon(@Request() req, @Param('saloonId') saloonId: string) {
+    return this.saloonService.deleteSaloon(saloonId);
+  }
 
-
-
-
+  @UseGuards(AccessTokenGuard)
+  @Delete('employee/:employeeId')
+  async deleteEmployee(@Request() req, @Param('employeeId') employeeId: string) {
+    return this.saloonService.deleteEmployee(employeeId);
+  }
 
 
 }
