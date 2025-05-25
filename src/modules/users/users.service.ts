@@ -48,9 +48,6 @@ export class UsersService {
     }
     const user = await this.userModel.create({
       ...createUserDto,
-      departmentId: createUserDto.departmentId ? new Types.ObjectId(createUserDto.departmentId) : null,
-      designationId: createUserDto.designationId ? new Types.ObjectId(createUserDto.designationId) : null,
-      roleId: new Types.ObjectId(createUserDto.roleId),
       createdBy: new Types.ObjectId(userId),
       orgId: new Types.ObjectId(orgId),
       avatarUrl: avatarUrl
@@ -112,11 +109,6 @@ export class UsersService {
     }
 
 
-    if (updateUserDto.departmentId) {
-      updateUserDto.departmentId = new Types.ObjectId(updateUserDto.departmentId);
-    }
-
-
     const updatedValue = await this.userModel.findOneAndUpdate({ _id: new Types.ObjectId(userId), orgId: new Types.ObjectId(orgId) },
       { ...updateUserDto, avatarUrl: user.avatarUrl }, { new: true }).lean();
 
@@ -155,6 +147,20 @@ export class UsersService {
       message: 'User deactivated successfully',
       data: user
     }
+
+  }
+
+  async userSignup(CreateUserDto: CreateUserDto) {
+    const existEmail = await this.userModel.findOne({ email: CreateUserDto.email });
+    if (existEmail) {
+      throw new Error('Email already exists');
+    }
+    const user = await this.userModel.create(CreateUserDto);
+    return {
+      message: 'User created successfully',
+      data: user
+    }
+
 
   }
 }

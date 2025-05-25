@@ -3,11 +3,7 @@ import { Types } from "mongoose";
 export class CreateUserDto {
     name: string;
     email: string;
-    employeeId: Types.ObjectId;
-    officeLocationId: Types.ObjectId;
-    departmentId: Types.ObjectId;
-    designationId: Types.ObjectId;
-    roleId: Types.ObjectId;
+    password: string;
     isActive: boolean;
 }
 

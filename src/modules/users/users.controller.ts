@@ -110,4 +110,9 @@ export class UsersController {
   async deactivateUser(@Request() req, @Param('userId') userId: string) {
     return this.usersService.deactivateUser(req.user.sub, req.user.orgId, userId);
   }
+
+  @Post('signup')
+  async signup(@Body() createUserDto: CreateUserDto) {
+    return this.usersService.userSignup(createUserDto);
+  }
 }
