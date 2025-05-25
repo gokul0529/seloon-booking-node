@@ -110,17 +110,12 @@ export class UsersService {
       const folder = `avatars/${orgId}`;
       user.avatarUrl = await this.s3Service.uploadFile(avatar, folder, FileName);
     }
-    if (updateUserDto.roleId) {
-      user.roleId = new Types.ObjectId(updateUserDto.roleId);
-    }
+
 
     if (updateUserDto.departmentId) {
       updateUserDto.departmentId = new Types.ObjectId(updateUserDto.departmentId);
     }
 
-    if (updateUserDto.designationId) {
-      user.designationId = new Types.ObjectId(updateUserDto.designationId);
-    }
 
     const updatedValue = await this.userModel.findOneAndUpdate({ _id: new Types.ObjectId(userId), orgId: new Types.ObjectId(orgId) },
       { ...updateUserDto, avatarUrl: user.avatarUrl }, { new: true }).lean();

@@ -2,7 +2,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Types } from 'mongoose';
 
 @Schema({ timestamps: true })
-export class Seloon extends Document {
+export class Saloon extends Document {
     @Prop({ required: true, unique: true })
     name: string;
 
@@ -13,10 +13,10 @@ export class Seloon extends Document {
     place: string; // Place or area within the city
 
     @Prop({ type: String, required: false })
-    latitude: string; // Latitude of the Seloon location
+    latitude: string; // Latitude of the Saloon location
 
     @Prop({ type: String, required: false })
-    longitude: string; // Longitude of the Seloon location
+    longitude: string; // Longitude of the Saloon location
 
     @Prop({ type: Types.ObjectId, ref: 'User', required: true })
     owner: Types.ObjectId;
@@ -31,4 +31,4 @@ export class Seloon extends Document {
     updatedAt: Date;
 }
 
-export const SeloonSchema = SchemaFactory.createForClass(Seloon);
+export const SaloonSchema = SchemaFactory.createForClass(Saloon);

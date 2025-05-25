@@ -35,9 +35,6 @@ export type UserDocument = HydratedDocument<User>;
 export class User {
     _id: string;
 
-    @Prop({ type: Types.ObjectId, ref: 'Organization', required: true, index: true })
-    orgId: Types.ObjectId;
-
     @Prop({ required: true, unique: true, lowercase: true })
     @IsNotEmpty({ message: 'Please provide your email' })
     @IsEmail({}, { message: 'Please provide a valid email' })
@@ -58,17 +55,8 @@ export class User {
     @Prop({ type: String, enum: UserType, default: UserType.USER })
     userType: UserType;
 
-    @Prop({ type: Types.ObjectId, ref: 'Role', required: true })
-    roleId?: Types.ObjectId;
-
-    @Prop({ type: Types.ObjectId, ref: 'OfficeLocation' })
-    officeLocationId?: Types.ObjectId;
-
-    @Prop({ type: Types.ObjectId, ref: 'Department' })
-    departmentId?: Types.ObjectId;
-
-    @Prop({ type: Types.ObjectId, ref: 'Designation' })
-    designationId?: Types.ObjectId;
+    @Prop({ type: Types.ObjectId, ref: 'Saloon' })
+    saloonId?: Types.ObjectId;
 
     @Prop({ type: String })
     employeeId?: string;

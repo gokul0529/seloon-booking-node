@@ -4,14 +4,14 @@ import { AppService } from './app.service';
 import { DatabaseModule } from './database/database.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { UsersModule } from './modules/users/users.module';
-import { SeloonModule } from './modules/seloon/seloon.module';
+import { SaloonModule } from './modules/saloon/saloon.module';
 
 @Module({
   imports: [
     DatabaseModule,
     AuthModule,
     UsersModule,
-    SeloonModule
+    SaloonModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -48,8 +48,6 @@ export class AuthService {
     const payload = {
       sub: user._id,
       email: user.email,
-      orgId: user.orgId,
-      roleId: user.roleId,
       permissions
     };
 
@@ -69,9 +67,7 @@ export class AuthService {
   generateAccessToken(user: UserDocument) {
     const payload = {
       sub: user._id,
-      email: user.email,
-      orgId: user.orgId,
-      roleId: user.roleId,
+      email: user.email
     };
 
     return this.jwtService.sign(payload, {
